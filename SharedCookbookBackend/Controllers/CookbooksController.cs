@@ -38,7 +38,7 @@ namespace SharedCookbookBackend.Controllers
 
         // GET: api/Cookbooks/ByPersonId/{personId}
         [HttpGet("person/{personId}/cookbooks")]
-        public async Task<ActionResult<IEnumerable<Cookbook>>> GetCookbooksByPersonId(int personId)
+        public async Task<ActionResult<List<Cookbook>>> GetCookbooksByPersonId(int personId)
         {
             var cookbooks = await _cookbookService.GetCookbooksForPerson(personId);
 
@@ -50,10 +50,10 @@ namespace SharedCookbookBackend.Controllers
             return Ok(cookbooks);
         }
 
-        [HttpGet("user/{currentPersonId}/invitations")]
-        public ActionResult<List<CookbookInvitation>> GetInvitationsForPerson(int personId)
+        [HttpGet("user/{personId}/invitations")]
+        public async Task<ActionResult<List<CookbookInvitation>>> GetInvitationsForPerson(int personId)
         {
-            var invitations = _cookbookService.GetInvitationsForPerson(personId);
+            var invitations = await _cookbookService.GetInvitationsForPerson(personId);
 
             if (invitations == null || !invitations.Any())
             {
