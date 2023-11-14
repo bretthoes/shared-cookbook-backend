@@ -50,7 +50,7 @@ namespace SharedCookbookBackend.Controllers
             return Ok(cookbooks);
         }
 
-        [HttpGet("user/{personId}/invitations")]
+        [HttpGet("person/{personId}/invitations")]
         public async Task<ActionResult<List<CookbookInvitation>>> GetInvitationsForPerson(int personId)
         {
             var invitations = await _cookbookService.GetInvitationsForPerson(personId);

@@ -14,11 +14,6 @@ namespace SharedCookbookBackend.Services
             _context = context;
         }
 
-        public async Task<List<Cookbook>> GetCookbooks()
-        {
-            return await _context.Cookbooks.ToListAsync();
-        }
-
         public async Task<Cookbook> GetCookbook(int id)
         {
             return await _context.Cookbooks.FindAsync(id);
@@ -95,7 +90,7 @@ namespace SharedCookbookBackend.Services
             await _context.SaveChangesAsync();
         }
 
-        public bool CookbookExists(int id)
+        private bool CookbookExists(int id)
         {
             return _context.Cookbooks.Any(e => e.CookbookId == id);
         }
