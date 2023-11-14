@@ -204,6 +204,9 @@ public partial class SharedCookbookContext : DbContext
             entity.Property(e => e.PasswordSalt)
                 .HasMaxLength(255)
                 .HasColumnName("password_salt");
+            entity.Property(e => e.FirebaseUserUid)
+                .HasMaxLength(255)
+                .HasColumnName("firebase_user_uid");
         });
 
         modelBuilder.Entity<Recipe>(entity =>

@@ -17,6 +17,8 @@ public partial class Person
 
     public string? PasswordSalt { get; set; }
 
+    public string? FirebaseUserUid { get; set; }
+
     public virtual ICollection<CookbookInvitation> CookbookInvitationRecipientPeople { get; set; } = new List<CookbookInvitation>();
 
     public virtual ICollection<CookbookInvitation> CookbookInvitationSenderPeople { get; set; } = new List<CookbookInvitation>();
