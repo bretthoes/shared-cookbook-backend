@@ -23,7 +23,7 @@ namespace SharedCookbookBackend.Controllers
         }
 
 
-        // GET: api/Persons/5
+        // GET: api/People/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> GetPerson(int id)
         {
@@ -65,12 +65,12 @@ namespace SharedCookbookBackend.Controllers
         public async Task<ActionResult<Person>> PostPerson(Person person)
         {
             await _personService.CreatePerson(person);
-            return CreatedAtAction("GetCookbook", new { id = person.PersonId }, person);
+            return CreatedAtAction("GetPerson", new { id = person.PersonId }, person);
         }
 
         // DELETE: api/Cookbooks/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCookbook(int id)
+        public async Task<IActionResult> DeletePerson(int id)
         {
             var Person = await GetPerson(id);
 
