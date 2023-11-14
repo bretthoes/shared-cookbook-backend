@@ -22,19 +22,6 @@ namespace SharedCookbookBackend.Controllers
             _cookbookService = cookbookService;
         }
 
-        // GET: api/Cookbooks
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Cookbook>>> GetCookbooks()
-        {
-            var cookbooks = await _cookbookService.GetCookbooks();
-
-            if (cookbooks == null || !cookbooks.Any())
-            {
-                return NotFound();
-            }
-            return cookbooks;
-        }
-
         // GET: api/Cookbooks/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Cookbook>> GetCookbook(int id)
@@ -46,21 +33,34 @@ namespace SharedCookbookBackend.Controllers
                 return NotFound();
             }
 
-            return cookbook;
+            return Ok(cookbook);
         }
 
         // GET: api/Cookbooks/ByPersonId/{personId}
-        [HttpGet("ByPerson/{personId}")]
+        [HttpGet("person/{personId}/cookbooks")]
         public async Task<ActionResult<IEnumerable<Cookbook>>> GetCookbooksByPersonId(int personId)
         {
-            var cookbooks = await _cookbookService.GetCookbooksByPersonId(personId);
+            var cookbooks = await _cookbookService.GetCookbooksForPerson(personId);
 
             if (cookbooks == null || !cookbooks.Any())
             {
                 return NotFound();
             }
 
-            return cookbooks;
+            return Ok(cookbooks);
+        }
+
+        [HttpGet("user/{currentPersonId}/invitations")]
+        public ActionResult<List<CookbookInvitation>> GetInvitationsForPerson(int personId)
+        {
+            var invitations = _cookbookService.GetInvitationsForPerson(personId);
+
+            if (invitations == null || !invitations.Any())
+            {
+                return NotFound("No invitations found for the user.");
+            }
+
+            return Ok(invitations);
         }
 
 
@@ -99,6 +99,13 @@ namespace SharedCookbookBackend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCookbook(int id)
         {
+            var cookbook = await GetCookbook(id);
+
+            if (cookbook == null)
+            {
+                return NotFound();
+            }
+
             await _cookbookService.DeleteCookbook(id);
             return NoContent();
         }

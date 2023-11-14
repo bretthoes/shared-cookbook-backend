@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SharedCookbookBackend.Data;
+using SharedCookbookBackend.Enums;
 using SharedCookbookBackend.Models;
 
 namespace SharedCookbookBackend.Services
@@ -23,11 +24,24 @@ namespace SharedCookbookBackend.Services
             return await _context.Cookbooks.FindAsync(id);
         }
 
-        public async Task<List<Cookbook>> GetCookbooksByPersonId(int personId)
+        public async Task<List<Cookbook>> GetCookbooksForPerson(int personId)
         {
-            return await _context.Cookbooks
-                .Where(c => c.PersonId == personId)
+            var cookbooks = await _context.Cookbooks
+                .Where(c => _context.CookbookMembers
+                        .Any(cm => cm.PersonId == personId && cm.CookbookId == c.CookbookId))
+                .ToListAsync(); 
+
+            return cookbooks;
+        }
+
+        public async Task<List<CookbookInvitation>> GetInvitationsForPerson(int personId)
+        {
+            var invitations = await _context.CookbookInvitations
+                .Where(ci => ci.RecipientPersonId == personId && ci.CookbookInvitationStatus == CookbookInvitationStatus.Sent)
+                .OrderByDescending(ci => ci.CookbookInvitationDate)
                 .ToListAsync();
+
+            return invitations;
         }
 
         public async Task<bool> UpdateCookbook(int id, Cookbook cookbook)

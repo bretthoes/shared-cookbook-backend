@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharedCookbookBackend.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace SharedCookbookBackend.Models;
@@ -13,7 +14,7 @@ public partial class CookbookInvitation
 
     public int? CookbookId { get; set; }
 
-    public string CookbookInvitationStatus { get; set; } = null!;
+    public CookbookInvitationStatus CookbookInvitationStatus { get; set; }
 
     public DateTime CookbookInvitationDate { get; set; }
 
