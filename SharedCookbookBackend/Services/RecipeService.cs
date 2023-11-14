@@ -14,6 +14,19 @@ namespace SharedCookbookBackend.Services
             _context = context;
         }
 
+        #region Create
+
+        public async Task<Recipe> CreateRecipe(Recipe Recipe)
+        {
+            _context.Recipes.Add(Recipe);
+            await _context.SaveChangesAsync();
+            return Recipe;
+        }
+
+        #endregion Create
+
+        #region Read
+
         public async Task<List<Recipe>> GetRecipesInCookbook(int cookbookId)
         {
             var recipes = await _context.Recipes
@@ -28,6 +41,10 @@ namespace SharedCookbookBackend.Services
         {
             return await _context.Recipes.FindAsync(id);
         }
+
+        #endregion Read
+
+        #region Update
 
         public async Task<bool> UpdateRecipe(int id, Recipe Recipe)
         {
@@ -60,13 +77,9 @@ namespace SharedCookbookBackend.Services
             }
         }
 
+        #endregion Update
 
-        public async Task<Recipe> CreateRecipe(Recipe Recipe)
-        {
-            _context.Recipes.Add(Recipe);
-            await _context.SaveChangesAsync();
-            return Recipe;
-        }
+        #region Delete
 
         public async Task DeleteRecipe(int id)
         {
@@ -80,9 +93,15 @@ namespace SharedCookbookBackend.Services
             await _context.SaveChangesAsync();
         }
 
+        #endregion Delete
+
+        #region Helper
+
         public bool RecipeExists(int id)
         {
             return _context.Recipes.Any(e => e.RecipeId == id);
         }
+
+        #endregion Helper
     }
 }

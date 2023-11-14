@@ -15,6 +15,11 @@ namespace SharedCookbookBackend.Controllers
     {
         private readonly IRecipeService _recipeService;
 
+        public RecipesController(IRecipeService recipeService)
+        {
+            _recipeService = recipeService;
+        }
+
         // GET: api/Recipes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Recipe>> GetRecipe(int id)
@@ -29,8 +34,8 @@ namespace SharedCookbookBackend.Controllers
             return Ok(recipe);
         }
 
-        // GET: api/Cookbooks/ByPersonId/{personId}
-        [HttpGet("person/{personId}/cookbooks")]
+        // GET: api/Recipes/ByPersonId/{personId}
+        [HttpGet("person/{personId}/recipes")]
         public async Task<ActionResult<List<Recipe>>> GetRecipesInCookbook(int cookbookId)
         {
             var recipes = await _recipeService.GetRecipesInCookbook(cookbookId);
@@ -48,7 +53,7 @@ namespace SharedCookbookBackend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRecipe(int id, Recipe recipe)
         {
-            if (id != recipe.CookbookId)
+            if (id != recipe.RecipeId)
             {
                 return BadRequest();
             }
@@ -70,12 +75,12 @@ namespace SharedCookbookBackend.Controllers
         public async Task<ActionResult<Recipe>> PostRecipe(Recipe recipe)
         {
             await _recipeService.CreateRecipe(recipe);
-            return CreatedAtAction("GetCookbook", new { id = recipe.RecipeId }, recipe);
+            return CreatedAtAction("GetRecipe", new { id = recipe.RecipeId }, recipe);
         }
 
-        // DELETE: api/Cookbooks/5
+        // DELETE: api/Recipes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCookbook(int id)
+        public async Task<IActionResult> DeleteRecipe(int id)
         {
             var recipe = await GetRecipe(id);
 
